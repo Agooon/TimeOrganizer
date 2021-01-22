@@ -4,14 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>dcfe5f5c-2889-40dd-be8a-3c0ad956ba0c</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>NLProcessing/__init__.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>TimeOrganizer</Name>
     <RootNamespace>TimeOrganizer</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +32,7 @@
     <Compile Include="Database\Initialization.py" />
     <Compile Include="Database\Operations.py" />
     <Compile Include="Database\__init__.py" />
+    <Compile Include="NLProcessing\NLPClassDefault.py" />
     <Compile Include="NLProcessing\Strategies.py" />
     <Compile Include="NLProcessing\__init__.py" />
     <Compile Include="TOrganizerFront\__init__.py" />

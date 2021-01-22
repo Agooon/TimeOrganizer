@@ -81,6 +81,19 @@ def testing3():
     #sEngine = SearchEngine(NLPClassDefault(),0.5)
     sEngine = SearchEngine(NLPSpacy(),0.5)
 
-    for e in sEngine.search("call me 3a Two",'all', None):
+    print("SEARCHQUERY 1: Crucial")
+    for e in sEngine.search("crucial",'all', None):
+        print(e)
+        print()
+    
+    print()
+    print("SEARCHQUERY 2: Crucial gift")
+    for e in sEngine.search("crucial gift",'all', None):
+        print(e)
+        print()
+
+    print()
+    print("SEARCHQUERY 3: Crucial gift gift")
+    for e in sEngine.search("crucial gift gift",'all', None):
         print(e)
         print()

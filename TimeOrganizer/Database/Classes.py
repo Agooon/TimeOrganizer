@@ -10,7 +10,6 @@ class Event(BaseModel):
     dateStart : datetime = datetime.now()
     dateEnd : datetime = datetime.now() + timedelta(days=1)
     description : str = 'Default event description'
-    descriptionClass : str = 'Default event word classification of description'
 
     length: timedelta = 0
     timeUntilStart: timedelta = 0
@@ -29,11 +28,10 @@ class Event(BaseModel):
         Length: {}
         TimeUntilStart: {}
         TimeUntilEnd: {}
-        Description: {}
-        DescriptionClass: {}'''
+        Description: {}'''
         .format(self.id, self.name, 
                 self.dateStart.strftime("%Y-%m-%d %H:%M:%S"), self.dateEnd.strftime("%Y-%m-%d %H:%M:%S"), 
-                self.length, self.timeUntilStart, self.timeUntilEnd, self.description, self.descriptionClass))
+                self.length, self.timeUntilStart, self.timeUntilEnd, self.description))
 
     def calcTimedeltas(self, actualTime: datetime):
         self.length = self.dateEnd - self.dateStart
@@ -46,9 +44,6 @@ class Event(BaseModel):
         regex = re.compile('[,\.!?]')
         desc = regex.sub('', self.description.lower())
         return desc.split(" ")
-
-    def getDescriptionClass(self) -> List[str]:
-        return self.descriptionClass.split(" ")
 
 
 

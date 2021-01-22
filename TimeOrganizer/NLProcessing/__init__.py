@@ -4,7 +4,7 @@ from NLProcessing.SearchEngine import testing3
 from Database.Initialization import createDatabase
 
 if __name__ == "__main__":
-    createDatabase()
+    createDatabase(True)
     testing3()
 
 

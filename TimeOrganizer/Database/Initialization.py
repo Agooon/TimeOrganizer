@@ -14,7 +14,7 @@ def createDatabase(replace:bool=False):
         if os.path.exists(nameOfDatabase):
             os.remove(nameOfDatabase)
         createFile()
-    #testAdding()
+        testAdding()
 
 def createFile():
     createEventTable(nameOfDatabase)
@@ -24,20 +24,17 @@ def testAdding():
             'name': 'OneTwoThree',
             'dateStart': datetime.now() + timedelta(days=2,hours=5),
             'dateEnd': datetime.now() + timedelta(days=2,hours=6,minutes=30),
-            'description': 'OneTwoThree Long call 123',
-            'descriptionClass': 'N A N -'}),
+            'description': "Doctor appointment. Very importnant , don't miss it!"}),
           Event(**{
             'name': 'Two',
             'dateStart': datetime.now() + timedelta(days=14,hours=5,minutes=55),
             'dateEnd': datetime.now() + timedelta(days=14,hours=6,minutes=55),
-            'description': 'Two Long call 2',
-            'descriptionClass': 'No data yet 2 '}),
+            'description': "Bartek birthday. Important, get a gift!"}),
           Event(**{
             'name': 'Three',
             'dateStart': datetime.now() - timedelta(days=2,hours=5),
             'dateEnd': datetime.now() + timedelta(weeks=117,days=14,hours=3,minutes=15),
-            'description': 'Three Long call 3',
-            'descriptionClass': 'No data yet 3'})]
+            'description': "Final exam, get some crucial knowledge!"})]
     addMultipleEvents(nameOfDatabase, ev)
 
 #    actualDate = datetime.now()

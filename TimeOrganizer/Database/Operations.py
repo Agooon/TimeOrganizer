@@ -19,8 +19,7 @@ def createEventTable(nameOfDatabase: str):
          Name text,
          DateStart date,
          DateEnd date,
-         Description text,
-         DescriptionClass text
+         Description text
         )''')
     connection.commit()
 
@@ -34,9 +33,9 @@ def addEvent(nameOfDatabase: str, event:Event):
     connection = sqlite3.connect(nameOfDatabase)
     cursor = connection.cursor()
 
-    cursor.execute('''INSERT INTO EventTable(Name, DateStart, DateEnd, Description, DescriptionClass) 
-                VALUES (?,?,?,?,?)''',
-                (event.name, event.dateStart, event.dateEnd, event.description, event.descriptionClass))
+    cursor.execute('''INSERT INTO EventTable(Name, DateStart, DateEnd, Description) 
+                VALUES (?,?,?,?)''',
+                (event.name, event.dateStart, event.dateEnd, event.description))
 
     connection.commit()
     connection.close()
@@ -48,9 +47,9 @@ def addMultipleEvents(nameOfDatabase: str, events: List[Event]):
     cursor = connection.cursor()
 
     for event in events:
-        cursor.execute('''INSERT INTO EventTable(Name, DateStart, DateEnd, Description, DescriptionClass) 
-                VALUES (?,?,?,?,?)''',
-                (event.name, event.dateStart, event.dateEnd, event.description, event.descriptionClass))
+        cursor.execute('''INSERT INTO EventTable(Name, DateStart, DateEnd, Description) 
+                VALUES (?,?,?,?)''',
+                (event.name, event.dateStart, event.dateEnd, event.description))
 
     connection.commit()
     connection.close()
@@ -79,8 +78,7 @@ def getEvent(nameOfDatabase: str, eventId:Event) -> Event:
             'name': call[1],
             'dateStart': call[2],
             'dateEnd': call[3],
-            'description': call[4],
-            'descriptionClass': call[5]})
+            'description': call[4]})
 
 # Get all events
 def getEvents(nameOfDatabase: str) -> List[Event]:
@@ -98,8 +96,7 @@ def getEvents(nameOfDatabase: str) -> List[Event]:
             'name': eventCall[1],
             'dateStart': eventCall[2],
             'dateEnd': eventCall[3],
-            'description': eventCall[4],
-            'descriptionClass': eventCall[5]}))
+            'description': eventCall[4]}))
 
 
     connection.close()
@@ -124,8 +121,7 @@ def getEventsAfter(nameOfDatabase: str, afterDate: datetime) -> List[Event]:
             'name': eventCall[1],
             'dateStart': eventCall[2],
             'dateEnd': eventCall[3],
-            'description': eventCall[4],
-            'descriptionClass': eventCall[5]}))
+            'description': eventCall[4]}))
 
     connection.close()
 
@@ -148,8 +144,7 @@ def getEventsBefore(nameOfDatabase: str, beforeDate: datetime) -> List[Event]:
             'name': eventCall[1],
             'dateStart': eventCall[2],
             'dateEnd': eventCall[3],
-            'description': eventCall[4],
-            'descriptionClass': eventCall[5]}))
+            'description': eventCall[4]}))
 
     connection.close()
 

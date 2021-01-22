@@ -32,6 +32,7 @@
     <Compile Include="Database\Initialization.py" />
     <Compile Include="Database\Operations.py" />
     <Compile Include="Database\__init__.py" />
+    <Compile Include="NLProcessing\Strategies.py" />
     <Compile Include="NLProcessing\__init__.py" />
     <Compile Include="TOrganizerFront\__init__.py" />
     <Compile Include="TOrganizerTests\__init__.py" />

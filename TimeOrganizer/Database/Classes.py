@@ -1,7 +1,8 @@
 ﻿from pydantic import BaseModel
 from datetime import datetime
 from datetime import timedelta
-
+from typing import List
+import re
 
 class Event(BaseModel):
     id : int = None
@@ -14,6 +15,11 @@ class Event(BaseModel):
     length: timedelta = 0
     timeUntilStart: timedelta = 0
     timeUntilEnd: timedelta = 0
+
+    # For NLP search, list of similar words for each word in sentence
+    # !!! NO NEED FOR IT !!!
+    # similarWords: List[List[str]] = []
+
 
     def __str__(self):
         return ('''Id: {}
@@ -35,6 +41,15 @@ class Event(BaseModel):
         self.timeUntilStart = timedelta(days=holderStart.days, seconds=holderStart.seconds)
         holderEnd = max((self.dateEnd - actualTime),timedelta(0))
         self.timeUntilEnd = timedelta(days=holderEnd.days, seconds=holderEnd.seconds)
+
+    def getWordsList(self):
+        regex = re.compile('[,\.!?]')
+        desc = regex.sub('', self.description.lower())
+        return desc.split(" ")
+
+    def getDescriptionClass(self) -> List[str]:
+        return self.descriptionClass.split(" ")
+
 
 
 #def testEvent():

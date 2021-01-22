@@ -11,7 +11,6 @@ class NLPClassDefault(StrategyClass):
 
 
 
-
 def testing():
 	checkEngine = NLPClassification(NLPClassDefault())
 

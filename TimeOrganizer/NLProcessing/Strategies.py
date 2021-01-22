@@ -32,7 +32,7 @@ class StrategyClass(abc.ABC):
         elif specificTag.startswith('R'):
             return 'r'
         else:
-            return '-'
+            return 'n'
 
 # Context, whcich will be using nlp
 class NLPClassification():

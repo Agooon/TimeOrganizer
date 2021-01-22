@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Classes.py" />
+    <Compile Include="Database\Initialization.py" />
     <Compile Include="Database\Operations.py" />
     <Compile Include="Database\__init__.py" />
     <Compile Include="NLProcessing\__init__.py" />

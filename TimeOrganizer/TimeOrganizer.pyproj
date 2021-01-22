@@ -28,6 +28,7 @@
     <Folder Include="TOrganizerTests\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\Classes.py" />
     <Compile Include="Database\__init__.py" />
     <Compile Include="NLProcessing\__init__.py" />
     <Compile Include="TOrganizerFront\__init__.py" />

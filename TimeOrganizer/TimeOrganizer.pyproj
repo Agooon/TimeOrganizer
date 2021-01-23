@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Classes.py" />
+    <Compile Include="Database\FileManagment.py" />
     <Compile Include="Database\Initialization.py" />
     <Compile Include="Database\Operations.py" />
     <Compile Include="Database\__init__.py" />
@@ -44,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLProcessing\NLPSpacyClass.py" />
+    <Content Include="rozklad_zajec.ics" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

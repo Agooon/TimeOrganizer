@@ -4,6 +4,7 @@ import os
 from Database.Operations import *
 from datetime import datetime
 from datetime import timedelta
+from Database.FileManagment import addEventsFromFile
 
 nameOfDatabase = str(pathlib.Path().absolute()) + "\\" + "Test.db"
 
@@ -15,6 +16,7 @@ def createDatabase(replace:bool=False):
             os.remove(nameOfDatabase)
         createFile()
         testAdding()
+        addEventsFromFile(nameOfDatabase, "rozklad_zajec.ics")
 
 def createFile():
     createEventTable(nameOfDatabase)

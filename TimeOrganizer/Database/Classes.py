@@ -11,12 +11,12 @@ class Event(BaseModel):
     dateEnd : datetime = datetime.now() + timedelta(days=1)
     description : str = 'Default event description'
 
-    length: timedelta = 0
-    timeUntilStart: timedelta = 0
-    timeUntilEnd: timedelta = 0
+    length : timedelta = 0
+    timeUntilStart : timedelta = 0
+    timeUntilEnd : timedelta = 0
 
     # For NLP search, list of similar words for each word in sentence
-    # !!! NO NEED FOR IT !!!
+    # !!!  NO NEED FOR IT !!!
     # similarWords: List[List[str]] = []
 
 
@@ -42,7 +42,7 @@ class Event(BaseModel):
 
     def getWordsList(self):
         regex = re.compile('[,\.!?]')
-        desc = regex.sub('', self.description.lower())
+        desc = regex.sub('', (self.name + " " + self.description).lower())
         return desc.split(" ")
 
 

@@ -40,6 +40,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NLProcessing\__init__.py" />
+    <Compile Include="TOrganizerFront\AddEventWindow.py" />
+    <Compile Include="TOrganizerFront\DayWindow.py" />
+    <Compile Include="TOrganizerFront\EventWindow.py" />
+    <Compile Include="TOrganizerFront\GuiOrganizer.py" />
+    <Compile Include="TOrganizerFront\MainWindow.py" />
+    <Compile Include="TOrganizerFront\SearchWindow.py" />
     <Compile Include="TOrganizerFront\__init__.py" />
     <Compile Include="TOrganizerTests\__init__.py" />
   </ItemGroup>

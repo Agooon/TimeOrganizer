@@ -14,7 +14,7 @@ eventName = ""
 #                                           #
 #                                           #
 
-def addEventWindowGui():
+def eventWindowGui():
     pass
 
 

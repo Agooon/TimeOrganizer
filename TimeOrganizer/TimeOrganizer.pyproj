@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>dcfe5f5c-2889-40dd-be8a-3c0ad956ba0c</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>NLProcessing/__init__.py</StartupFile>
+    <StartupFile>TOrganizerFront/__init__.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -41,6 +41,7 @@
     </Compile>
     <Compile Include="NLProcessing\__init__.py" />
     <Compile Include="TOrganizerFront\AddEventWindow.py" />
+    <Compile Include="TOrganizerFront\Backend.py" />
     <Compile Include="TOrganizerFront\DayWindow.py" />
     <Compile Include="TOrganizerFront\EventWindow.py" />
     <Compile Include="TOrganizerFront\GuiOrganizer.py" />

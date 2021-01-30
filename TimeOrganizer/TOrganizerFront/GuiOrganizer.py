@@ -30,15 +30,17 @@ class StyleConfigClass:
         self.mainBackgroundDarker = '#111'
         self.mainBackgroundDarkerest = '#000'
         
-        self.mainTextColorLighter = '#925fb2'
-        self.mainTextColor = '#703ea0'
-        self.mainTextColorDarker = '#502c80'
-        self.mainTextColorStrong = '#7f00ff'
+        self.mainTextColorLighter = '#499'
+        self.mainTextColor = '#277'
+        self.mainTextColorDarker = '#055'
+        self.mainTextColorDarkerest = '#033'
 
         self.mainBorderLighter = '#555'
         self.mainBorder = '#333'
 
-        self.cursorColor = '#703ea0'
+        self.cursorColor = self.mainTextColor
+
+        self.errorColor = "#b11"
         
 
 class HeaderBarSetupClass(tk.Toplevel):
@@ -47,22 +49,21 @@ class HeaderBarSetupClass(tk.Toplevel):
         self.sc = StyleConfigClass()
         self.master = args[0]
         tk.Toplevel.__init__(self, *args, **kwargs)
-
+        
         self.protocol("WM_DELETE_WINDOW", self.closeWindow)
 
         self.style = ttk.Style(self.master)
         self.style.theme_use('clam')
-        # create custom DateEntry style with red background
-        self.style.configure('my.DateEntry', 
-                             fieldbackground=sc.mainBackgroundDarker, 
-                             foreground = sc.mainTextColor, 
-                             background = sc.mainBackgroundDarkerM,
-                             arrowcolor = sc.mainTextColor,
-                             bordercolor = sc.mainBorderLighter,
-                             darkcolor=sc.mainBackgroundDarker, 
-                             lightcolor=sc.mainBackgroundDarker)
+        self.attributes('-topmost', 1)
 
-        self.myLabel = tk.Label(self, font = sc.fontNormal, background = sc.mainBackgroundDarker, foreground=sc.mainTextColor)
+        # Label for title of window
+        self.myLabelTitle = tk.Label(self, font = sc.fontBig, background = sc.mainBackgroundDarker, foreground=sc.mainTextColor)
+        # Label for default label
+        self.myLabel = tk.Label(self, font = sc.fontNormal, 
+                                background = sc.mainBackgroundDarker, 
+                                foreground=sc.mainTextColor,
+                                borderwidth = 1, relief='solid',
+                                highlightcolor = sc.mainBorderLighter)
         
         self.myText = tk.Text(self, font=sc.fontSmall, 
                               background =sc.mainBackgroundDarker,
@@ -72,7 +73,19 @@ class HeaderBarSetupClass(tk.Toplevel):
         self.myEntry = tk.Entry(self, font = sc.fontNormal, 
                               background = sc.mainBackgroundDarker,
                               insertbackground =  sc.cursorColor,
-                              foreground = sc.mainTextColor)
+                              foreground = sc.mainTextColor,)
+
+        # create custom DateEntry style with red background
+        self.style.configure('my.DateEntry', 
+                             fieldbackground=sc.mainBackgroundDarker, 
+                             foreground = sc.mainTextColor, 
+                             background = sc.mainBackgroundDarkerM,
+                             arrowcolor = sc.mainTextColor,
+                             bordercolor = sc.mainBorderLighter,
+                             darkcolor=sc.mainBackgroundDarker, 
+                             lightcolor=sc.mainBackgroundDarker,
+                             activeforeground = sc.mainTextColor)
+        
 
         self.myDateEntry = DateEntry(self, font=sc.fontNormal, style='my.DateEntry',
                                          bordercolor  = sc.mainBorderLighter,
@@ -89,12 +102,54 @@ class HeaderBarSetupClass(tk.Toplevel):
                                          othermonthwebackground   = sc.mainBackground,
                                          othermonthweforeground      = sc.mainTextColor)
 
-        self.vcmd = (self.register(self.callback))
-        self.myEntryTime = tk.Entry(self, font = sc.fontNormal, 
+        # Time Entry 
+        self.style.configure('myTime.TEntry',
+                              padding='5 5 5 5',
+                              foreground = sc.mainTextColor, 
+                              background = sc.mainBackgroundDarkerM,
+                              fieldbackground=sc.mainBackgroundDarker,
+                              insertbackground =sc.mainTextColor,
+                              bordercolor = sc.mainBorderLighter,
+                              darkcolor=sc.mainBackgroundDarker, 
+                              lightcolor=sc.mainBackgroundDarker,
+                              highlightbackground =sc.mainBackgroundDarker,
+                              insertcolor= sc.mainTextColor,
+                              selectborderwidth = 0)
+        # Hours Entry
+        self.vcmdH = (self.register(self.callbackH))
+        self.myEntryTimeH = ttk.Entry(self, font = sc.fontNormal, 
                               background = sc.mainBackgroundDarker,
-                              insertbackground =  sc.cursorColor,
                               foreground = sc.mainTextColor,
-                              validate='all', validatecommand=(self.vcmd, '%P'))
+                              validate='all', validatecommand=(self.vcmdH, '%P'),
+                              justify=RIGHT, style='myTime.TEntry')
+        # Minute Entry
+        self.vcmdM = (self.register(self.callbackM))
+        self.myEntryTimeM = ttk.Entry(self, font = sc.fontNormal, 
+                              background = sc.mainBackgroundDarker,
+                              foreground = sc.mainTextColor,
+                              validate='all', validatecommand=(self.vcmdM, '%P'),
+                              justify=LEFT, style='myTime.TEntry')
+
+        # Checkbutton
+        self.myCheckB = tk.Checkbutton(self, onvalue=1, offvalue=0, 
+                                       font= sc.fontSmall,
+                                       foreground = sc.mainTextColor,
+                                       background = sc.mainBackgroundDarker,
+                                       activebackground = sc.mainTextColor,
+                                       borderwidth = 1, relief='solid',
+                                       activeforeground = sc.mainBackgroundDarker,
+                                       selectcolor = sc.mainTextColorDarkerest)
+
+        # Amount of repeats Entry
+        self.vcmdRA = (self.register(self.callbackRA))
+        self.myEntryRecurrAmount = ttk.Entry(self, font = sc.fontNormal, 
+                              background = sc.mainBackgroundDarker,
+                              foreground = sc.mainTextColor,
+                              validate='all', validatecommand=(self.vcmdRA, '%P'),
+                              justify=LEFT, style='myTime.TEntry',
+                              state='disabled')
+
+
 
       
     # To clone the widgets
@@ -111,7 +166,8 @@ class HeaderBarSetupClass(tk.Toplevel):
             return clone
 
         for key in widget.configure():
-            clone.configure({key: widget.cget(key)})
+            if(key !='class'):
+                clone.configure({key: widget.cget(key)})
         return clone
 
     #                                    #
@@ -154,15 +210,56 @@ class HeaderBarSetupClass(tk.Toplevel):
         self.master.closeWindow()
 
     #Vaidation of TimePicker 
-    def callback(self, P):
-        if str.isdigit(P) or P == "":
+    # Hours
+    def callbackH(self, P):
+        if(P == ""):
+            return True
+   
+        if str.isdigit(P) and len(P)<=2:
+            val = int(P)
+            if val >= 24 or val<0:
+                return False
+            if(len(P) == 2 and P[0] == "0"):
+                return False
             return True
         else:
             return False
+    # Minutes
+    def callbackM(self, P):
+        if(P == ""):
+            return True
 
+        if str.isdigit(P) and len(P)<=2:
+            val = int(P)
+            if val >= 60 or val<0:
+                return False
+            if(len(P) == 2 and P[0] == "0"):
+                return False
+            return True
+        else:
+            return False
+    # Minutes
+    def callbackRA(self, P):
+        if(P == ""):
+            return True
+        if str.isdigit(P) and len(P)<=2:
+            val = int(P)
+            if val >= 100 or val<0:
+                return False
+            if(len(P) == 2 and P[0] == "0"):
+                return False
+            return True
+        else:
+            return False
     # Navigatino to other windows
     def openAddEventWindow(self):
         addEventWindowGui(self.master, StyleConfigClass())
+
+    def openMainMenu(self):
+        pass
+
+    def openMainMenuAndClose(self):
+        pass
     ####### End Header config ############
 
 

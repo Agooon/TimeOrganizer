@@ -1,5 +1,6 @@
 ﻿import tkinter as tk
 from tkinter import font
+from tkinter import *
 from tkinter import ttk
 from tkcalendar import Calendar, DateEntry
 
@@ -88,6 +89,31 @@ class HeaderBarSetupClass(tk.Toplevel):
                                          othermonthwebackground   = sc.mainBackground,
                                          othermonthweforeground      = sc.mainTextColor)
 
+        self.vcmd = (self.register(self.callback))
+        self.myEntryTime = tk.Entry(self, font = sc.fontNormal, 
+                              background = sc.mainBackgroundDarker,
+                              insertbackground =  sc.cursorColor,
+                              foreground = sc.mainTextColor,
+                              validate='all', validatecommand=(self.vcmd, '%P'))
+
+      
+    # To clone the widgets
+    def clone(self, widget):
+        parent = widget.nametowidget(widget.winfo_parent())
+        cls = widget.__class__
+        name = cls.__name__
+
+        clone = cls(parent)
+        if(name == "DateEntry"):
+            keys = self.myDateEntry.keys()
+            for key in keys:
+                clone.configure({key: widget.cget(key)})
+            return clone
+
+        for key in widget.configure():
+            clone.configure({key: widget.cget(key)})
+        return clone
+
     #                                    #
     ########### Header config ############
     #                                    #
@@ -127,6 +153,12 @@ class HeaderBarSetupClass(tk.Toplevel):
         print("Closing window: "+ self.__class__.__name__)
         self.master.closeWindow()
 
+    #Vaidation of TimePicker 
+    def callback(self, P):
+        if str.isdigit(P) or P == "":
+            return True
+        else:
+            return False
 
     # Navigatino to other windows
     def openAddEventWindow(self):

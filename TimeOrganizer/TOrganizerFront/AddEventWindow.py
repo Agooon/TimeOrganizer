@@ -3,7 +3,6 @@ from tkinter import *
 from TOrganizerFront.GuiOrganizer import GuiOrganizerClass, StyleConfigClass, HeaderBarSetupClass
 from tkcalendar import Calendar, DateEntry
 from tkinter import ttk
-
 #                                           #
 #                                           #
 ############ Global variables ###############
@@ -62,29 +61,39 @@ class AddEventWindowClass(HeaderBarSetupClass):
         #                                     #
 
         # 1
-        self.eventNameLabel = self.myLabel
+        self.eventNameLabel = self.clone(self.myLabel)
         self.eventNameLabel['text'] = "Event name"
-        self.eventNameI = self.myEntry
+        self.eventNameI = self.clone(self.myEntry)
 
         self.eventNameLabel.grid(column = 0, row = 2,columnspan=4, sticky=W + E + S + N)
         self.eventNameI.grid(column = 4, row = 2, columnspan=4, sticky=W + E + S + N)
 
         # 2
-        self.eventDescLabel = self.myLabel
-        self.eventDescI = self.myText
+        self.eventDescLabel =self.clone(self.myLabel)
+        self.eventDescI = self.clone(self.myText)
 
         self.eventDescLabel.grid(column = 0, row = 3,columnspan=4, rowspan=2, sticky=W + E + S + N)
         self.eventDescI.grid(column = 4, row = 3, columnspan=4,rowspan=2, sticky=W + E + S + N)
 
         # 3
         self.eventDateStartLabel = tk.Label(self, text="Date start", font = sc.fontNormal, background = sc.mainBackgroundDarker, foreground=sc.mainTextColor)
-        self.eventDateStartI = self.myDateEntry
+        self.eventDateStartI = self.clone(self.myDateEntry)
 
         self.eventDateStartLabel.grid(column = 0, row = 5,columnspan=4, sticky=W + E + S + N)
         self.eventDateStartI.grid(column = 4, row = 5, columnspan=4, sticky=W + E + S + N)
 
-        eventDateStartI = ""
-        eventDateEndI = ""
+        
+        # 4
+        self.eventTimeStartLabel = self.clone(self.myLabel)
+        self.eventTimeStartI = self.clone(self.myEntryTime)
+
+        self.eventTimeStartLabel.grid(column = 0, row = 6,columnspan=4,  sticky=W + E + S + N)
+        self.eventTimeStartI.grid(column = 4, row = 6, columnspan=4, sticky=W + E + S + N)
+
+        eventTimeStartI = ""
+        eventTimeEndI = ""
+        eventLengthHoursI = ""
+        eventLengthMinutesI = ""
 
 
 

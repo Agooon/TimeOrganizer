@@ -1,19 +1,18 @@
 ﻿import tkinter as tk
 from tkinter import *
 from TOrganizerFront.GuiOrganizer import GuiOrganizerClass, StyleConfigClass, HeaderBarSetupClass
+from tkcalendar import Calendar, DateEntry
+from tkinter import ttk
 
 #                                           #
 #                                           #
 ############ Global variables ###############
 #                                           #
 #                                           #
-sC = ""
+sc = ""
 
 ######### Binding variables ###########
-eventNameI = ""
-eventDescI = ""
-eventDateStartI = ""
-eventDateEndI = ""
+
 
 eventFilename = ""
 
@@ -27,93 +26,74 @@ eventFrequencyRep = ""
 #                                           #
 #                                           #
 class AddEventWindowClass(HeaderBarSetupClass):
-#                                           #
-#                                           #
-############ Front Definition ###############
-#                                           #
-#                                           #
     def __init__(self, *args, **kwargs):
-        tk.Toplevel.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
+        self.openWindow()
 
         self.title("Add new Event")
-        self.geometry("480x720")
+        self.geometry("480x640")
         self.overrideredirect(True)
-        self.configure(background=sC.colorNavyBlue)
+        self.configure(background=sc.mainBackground)
 
         for x in range(8):
-            self.grid_columnconfigure(x, weight=1, uniform="fred")
+            self.grid_columnconfigure(x, weight=1, minsize=60, uniform="fred")
         for y in range(12):
-            self.grid_rowconfigure(y, weight=1, uniform="fred")
+            self.grid_rowconfigure(y, weight=1, minsize=60, uniform="fred")
 
         #                                     #
         ############ Nav Config ###############
         #                                     #
 
-        self.grip = tk.Label(self, text="Add new event", background = sC.colorViolet, font = sC.fontBig)
-        self.grip.grid(column = 0, row = 0, columnspan=8, sticky=W + E + S + N)
+        self.grip = tk.Label(self, text="Add new event", background = sc.mainBackgroundDarker, font = sc.fontBig)
+        self.grip.grid(column = 1, row = 0, columnspan=6, sticky=W + E + S + N)
 
         self.grip.bind("<ButtonPress-1>", self.start_move)
         self.grip.bind("<ButtonRelease-1>", self.stop_move)
         self.grip.bind("<B1-Motion>", self.do_move)
         self.grip.bind("<Map>",self.frame_mapped)
 
-        self.exit = tk.Button(self, text=" X ",borderwidth=0, background=sC.colorVioletDark, command= lambda: self.closeApp())
+        self.exit = tk.Button(self, text="  X  ",borderwidth=0, background=sc.mainBackgroundDarker, foreground=sc.mainTextColor, command= lambda: self.closeWindow())
         self.exit.grid(column = 7, row = 0, sticky=E + N)
-        self.minimalize = tk.Button(self, text=" - ",borderwidth=0, background=sC.colorVioletDark, command= lambda: self.minimalizeApp())
+        self.minimalize = tk.Button(self, text="  - ",borderwidth=0, background=sc.mainBackgroundDarker, foreground=sc.mainTextColor, command= lambda: self.minimalizeApp())
         self.minimalize.grid(column = 7, row = 0, sticky= N)
 
         #                                     #
         ############ Rest of Ui ###############
         #                                     #
 
-        self.eventNameLabel = tk.Label(self, text="Event name", font = sC.fontNormal, background = sC.colorViolet, foreground='#f3e25f')
-        self.eventNameI = tk.Entry(self, font=sC.fontNormal, background =sC.colorViolet)
+        # 1
+        self.eventNameLabel = self.myLabel
+        self.eventNameLabel['text'] = "Event name"
+        self.eventNameI = self.myEntry
 
-        self.eventNameLabel.grid(column = 1, row = 2,columnspan=1, sticky=W + E + S + N)
-        self.eventNameI.grid(column = 4, row = 2, columnspan=2, sticky=W + E + S + N)
+        self.eventNameLabel.grid(column = 0, row = 2,columnspan=4, sticky=W + E + S + N)
+        self.eventNameI.grid(column = 4, row = 2, columnspan=4, sticky=W + E + S + N)
+
+        # 2
+        self.eventDescLabel = self.myLabel
+        self.eventDescI = self.myText
+
+        self.eventDescLabel.grid(column = 0, row = 3,columnspan=4, rowspan=2, sticky=W + E + S + N)
+        self.eventDescI.grid(column = 4, row = 3, columnspan=4,rowspan=2, sticky=W + E + S + N)
+
+        # 3
+        self.eventDateStartLabel = tk.Label(self, text="Date start", font = sc.fontNormal, background = sc.mainBackgroundDarker, foreground=sc.mainTextColor)
+        self.eventDateStartI = self.myDateEntry
+
+        self.eventDateStartLabel.grid(column = 0, row = 5,columnspan=4, sticky=W + E + S + N)
+        self.eventDateStartI.grid(column = 4, row = 5, columnspan=4, sticky=W + E + S + N)
+
+        eventDateStartI = ""
+        eventDateEndI = ""
 
 
 
 
 
 def addEventWindowGui(guiOrganizer: GuiOrganizerClass, calledSC: StyleConfigClass):
-    global sC
-    sC = calledSC
+    global sc
+    sc = calledSC
     hb = AddEventWindowClass(guiOrganizer)
-
-#def addEventWindowGui(guiOrganizer: GuiOrganizerClass, sC: StyleConfigClass):
-#    global eventNameI
-#    global eventDescI
-#    global eventDateStartI
-#    global eventDateEndI
-#    global eventFilename
-#    global eventFrequency
-#    global eventFrequencyRep
-    
-#    eW = tk.Toplevel(guiOrganizer.master)
-#    eW.overrideredirect(True)
-#    eW.title("Add new Event")
-
-#    eW.configure(background=sC.colorNavyBlue)
-#    eW.geometry("480x720")
-
-#    # 480x720
-#    for x in range(8):
-#        eW.columnconfigure(x, weight = 0, minsize=50)
-#    for y in range(12):
-#        eW.rowconfigure(y, weight = 0, minsize=50)
-
-#    # First row
-#    eventNameLabel = tk.Label(eW, text="Event name", font = sC.fontNormal,
-#    background = sC.colorViolet, foreground='#f3e25f')
-#    eventNameI = tk.Entry(eW, font=sC.fontNormal, background =sC.colorViolet)
-
-#    eventNameLabel.grid(column = 1, row = 1,columnspan=2)
-#    eventNameI.grid(column = 4, row = 1, columnspan=2)
-
-
-#    eW.mainloop()
-
 
 
 

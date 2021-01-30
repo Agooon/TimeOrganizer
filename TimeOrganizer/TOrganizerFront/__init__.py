@@ -4,17 +4,14 @@ import tkinter as tk
 
 
 
-def testing1():
+def openAddEventWindow():
     guiOrganizer = GuiOrganizerClass()
     sC = StyleConfigClass()
-   
     addEventWindowGui(guiOrganizer, sC)
-    guiOrganizer.mainloop()
-
-    
+    guiOrganizer.mainloop() 
 
     
 
 
 if __name__ == "__main__":
-    testing1()
+    openAddEventWindow()

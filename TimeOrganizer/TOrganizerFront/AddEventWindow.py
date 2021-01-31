@@ -9,21 +9,6 @@ import Database.Classes as dbClass
 import calendar
 #                                           #
 #                                           #
-############ Global variables ###############
-#                                           #
-#                                           #
-sc = ""
-
-######### Binding variables ###########
-
-eventFilename = ""
-
-# everyDay, everyWeek, everyMonth, everyYear
-eventFrequency = ""
-eventFrequencyRep = ""
-
-#                                           #
-#                                           #
 ############ Front Definition ###############
 #                                           #
 #                                           #
@@ -228,10 +213,8 @@ class AddEventWindowClass(HeaderBarSetupClass):
             str(self.eventTimeEndMI.get()),  str(self.evenTimeEndNextDayCheck.get()), 
             str(self.eventRecurrCheck.get()),     str(self.eventRecurrAmountI.get()), 
             str(self.menuRecurrVal.get()))
-
         self.setMessage(msg,succ)
-
-       
+   
 
     def addEventFromFile(self):
         fileName = str(self.eventAddFromFileI.get())
@@ -250,31 +233,11 @@ class AddEventWindowClass(HeaderBarSetupClass):
         self.infoLine['state'] = 'disabled'
 
 
-
-
+#                                           #
+############## Initialization ###############
+#                                           #
 
 def addEventWindowGui(guiOrganizer: GuiOrganizerClass, calledSC: StyleConfigClass):
     global sc
     sc = calledSC
     hb = AddEventWindowClass(guiOrganizer)
-
-
-
-#                                           #
-#                                           #
-################# Operations ################
-#                                           #
-#                                           #
-def addEvent():
-    pass
-
-
-#                                           #
-################# Navigation ################
-#                                           #
-
-
-
-
-
-

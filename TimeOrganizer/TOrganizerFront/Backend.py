@@ -20,6 +20,20 @@ def dbExist():
 def createNewDb():
     dbInit.createDatabase(True)
 
+def getEvent(eventId:int) ->dbClass.Event:
+    try:
+        return dbOper.getEvent(nameOfDatabase, eventId)
+    except:
+        return "Error"
+
+def updateEvent(event: dbClass.Event, eventId:int):
+    if(dbExist):
+        dbOper.updateEvent(nameOfDatabase, event, eventId)
+        return "Event has been changed" , True
+    else:
+        createNewDb()
+        return msgOfDbNotExist, False
+
 def addEventsSingleEvent(event:dbClass.Event) -> [str,bool]:
     if(dbExist):
         dbOper.addEvent(nameOfDatabase, event)
@@ -27,6 +41,7 @@ def addEventsSingleEvent(event:dbClass.Event) -> [str,bool]:
     else:
         createNewDb()
         return msgOfDbNotExist, False
+
 def addEventList(eventList:List[dbClass.Event]) -> [str,bool]:
     if(dbExist()):
         dbOper.addMultipleEvents(nameOfDatabase, eventList)

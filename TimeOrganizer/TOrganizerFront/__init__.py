@@ -1,5 +1,6 @@
 ﻿from TOrganizerFront.GuiOrganizer import GuiOrganizerClass, StyleConfigClass
 from TOrganizerFront.AddEventWindow import addEventWindowGui
+from TOrganizerFront.EventWindow import eventWindowGui
 import tkinter as tk
 
 
@@ -7,7 +8,7 @@ import tkinter as tk
 def openAddEventWindow():
     guiOrganizer = GuiOrganizerClass()
     sC = StyleConfigClass()
-    addEventWindowGui(guiOrganizer, sC)
+    eventWindowGui(guiOrganizer, sC, 5)
     guiOrganizer.mainloop() 
 
     

@@ -23,6 +23,7 @@ class StyleConfigClass:
         self.fontBig = font.Font(size=20)
         self.fontNormal = font.Font(size=16)
         self.fontSmall = font.Font(size=12)
+        self.fontSmallest = font.Font(size=9)
 
         
         self.mainBackground = '#242424'
@@ -40,7 +41,8 @@ class StyleConfigClass:
 
         self.cursorColor = self.mainTextColor
 
-        self.errorColor = "#b11"
+        self.errorColor = "#900"
+        self.successColor = "#0a0"
         
 
 class HeaderBarSetupClass(tk.Toplevel):
@@ -68,12 +70,20 @@ class HeaderBarSetupClass(tk.Toplevel):
         self.myText = tk.Text(self, font=sc.fontSmall, 
                               background =sc.mainBackgroundDarker,
                               insertbackground =  sc.cursorColor,
-                              foreground = sc.mainTextColor)
+                              foreground = sc.mainTextColor,
+                              padx=5)
 
-        self.myEntry = tk.Entry(self, font = sc.fontNormal, 
+        self.style.configure('my.TEntry',padding='5 5 5 5',
+                              fieldbackground=sc.mainBackgroundDarker, 
                               background = sc.mainBackgroundDarker,
                               insertbackground =  sc.cursorColor,
-                              foreground = sc.mainTextColor,)
+                              insertcolor= sc.mainTextColor,
+                              foreground = sc.mainTextColor,
+                              bordercolor = sc.mainBorderLighter,
+                              darkcolor=sc.mainBackgroundDarker, 
+                              lightcolor=sc.mainBackgroundDarker) 
+
+        self.myEntry = ttk.Entry(self, style='my.TEntry',font = sc.fontNormal)
 
         # create custom DateEntry style with red background
         self.style.configure('my.DateEntry', 

@@ -55,6 +55,27 @@ def addMultipleEvents(nameOfDatabase: str, events: List[Event]):
     connection.close()
 
 #                       #
+#  Updating Operations  #
+#                       #
+
+# Update Event list
+def updateEvent(nameOfDatabase: str, eventUpdateVal:Event, id:int):
+
+    connection = sqlite3.connect(nameOfDatabase)
+    cursor = connection.cursor()
+
+    cursor.execute('''UPDATE EventTable
+                            SET Name ?,
+                                DateStart ?,
+                                DateEnd ?,
+                                Description ?
+                            WHERE id = ?''',
+                (event.name, event.dateStart, event.dateEnd, event.description, event.id))
+
+    connection.commit()
+    connection.close()
+
+#                       #
 #  Getting Operations   #
 #                       #
 

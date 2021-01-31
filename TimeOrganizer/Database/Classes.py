@@ -2,6 +2,7 @@
 from datetime import datetime
 from datetime import timedelta
 from typing import List
+
 import re
 
 class Event(BaseModel):

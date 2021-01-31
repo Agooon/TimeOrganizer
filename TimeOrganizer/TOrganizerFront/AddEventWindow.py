@@ -3,6 +3,10 @@ from tkinter import *
 from TOrganizerFront.GuiOrganizer import GuiOrganizerClass, StyleConfigClass, HeaderBarSetupClass
 from tkcalendar import Calendar, DateEntry
 from tkinter import ttk
+
+import TOrganizerFront.Backend as myBackend
+import Database.Classes as dbClass
+import calendar
 #                                           #
 #                                           #
 ############ Global variables ###############
@@ -11,7 +15,6 @@ from tkinter import ttk
 sc = ""
 
 ######### Binding variables ###########
-
 
 eventFilename = ""
 
@@ -30,15 +33,16 @@ class AddEventWindowClass(HeaderBarSetupClass):
         self.openWindow()
 
         self.title("Add new Event")
-        self.geometry("480x585")
+        self.geometry("480x650")
         self.overrideredirect(True)
         self.configure(background=sc.mainBackgroundDarkerM)
 
         for x in range(8):
             self.grid_columnconfigure(x, weight=1, minsize=60, uniform="fred")
-        for y in range(13):
+        for y in range(14):
             self.grid_rowconfigure(y, weight=1, minsize=45, uniform="fred")
-
+        self.grid_rowconfigure(10, weight=1, minsize=30, uniform="fred")
+        self.grid_rowconfigure(1, weight=1, minsize=65, uniform="fred")
         #                                     #
         ############ Nav Config ###############
         #                                     #
@@ -61,13 +65,14 @@ class AddEventWindowClass(HeaderBarSetupClass):
         ############ Rest of Ui ###############
         #                                     #
 
-        self.infoLine = self.clone(self.myLabel)
+        # 1 Message to UI
+        self.infoLine = self.clone(self.myText)
         self.infoLine['background'] = sc.mainBackgroundDarkerM
-        self.infoLine['foreground'] = sc.errorColor
-        self.infoLine['text'] = sc.errorColor
-        self.infoLine.grid(column = 0, row = 1, columnspan=8, sticky=W + E+ S + N)
+        self.infoLine['state'] = 'disabled'
+        self.infoLine['font'] = sc.fontSmall
+        self.infoLine.grid(column = 0, row = 1, columnspan=8, sticky=W + E + S + N)
 
-        # 1
+        # 2
         self.eventNameLabel = self.clone(self.myLabel)
         self.eventNameLabel['text'] = "Event name: "
         self.eventNameI = self.clone(self.myEntry)
@@ -75,7 +80,7 @@ class AddEventWindowClass(HeaderBarSetupClass):
         self.eventNameLabel.grid(column = 0, row = 2,columnspan=4, sticky=W + E + S + N)
         self.eventNameI.grid(column = 4, row = 2, columnspan=4, sticky=W + E + S + N)
 
-        # 2 3
+        # 3 4
         self.eventDescLabel = self.clone(self.myLabel)
         self.eventDescLabel['text'] = "Description: "
         self.eventDescI = self.clone(self.myText)
@@ -83,7 +88,7 @@ class AddEventWindowClass(HeaderBarSetupClass):
         self.eventDescLabel.grid(column = 0, row = 3,columnspan=4, rowspan=2, sticky=W + E + S + N)
         self.eventDescI.grid(column = 4, row = 3, columnspan=4,rowspan=2, sticky=W + E + S + N)
 
-        # 4
+        # 5
         self.eventDateStartLabel = self.clone(self.myLabel)
         self.eventDateStartLabel['text'] = "Date start: "
         self.eventDateStartI = self.clone(self.myDateEntry)
@@ -92,7 +97,7 @@ class AddEventWindowClass(HeaderBarSetupClass):
         self.eventDateStartI.grid(column = 4, row = 5, columnspan=4, sticky=W + E + S + N)
 
         
-        # 5
+        # 6
         self.eventTimeStartLabel = self.clone(self.myLabel)
         self.eventTimeStartLabel['text'] = 'Time start:'
 
@@ -104,16 +109,17 @@ class AddEventWindowClass(HeaderBarSetupClass):
         self.eventTimeStartMI.grid(column = 6, row = 6, columnspan=2, sticky=W + E + S + N)
 
 
-        # 6
+        # 7
         self.eventTimeEndLabel = self.clone(self.myLabel)
         self.eventTimeEndLabel['text'] = 'Time end:'
 
         self.eventTimeEndHI = self.clone(self.myEntryTimeH)
         self.eventTimeEndMI = self.clone(self.myEntryTimeM)
 
-
+        self.evenTimeEndNextDayCheck = tk.IntVar()
         self.evenTimeEndNextDay = self.clone(self.myCheckB)
         self.evenTimeEndNextDay['text'] = 'Next\nDay'
+        self.evenTimeEndNextDay['variable'] = self.evenTimeEndNextDayCheck
 
 
         self.eventTimeEndLabel.grid(column = 0, row = 7,columnspan=4,  sticky=W + E + S + N)
@@ -121,7 +127,7 @@ class AddEventWindowClass(HeaderBarSetupClass):
         self.eventTimeEndMI.grid(column = 6, row = 7,  sticky=W + E + S + N)
         self.evenTimeEndNextDay.grid(column = 7, row = 7, sticky=W + E + S + N)
 
-        # 7
+        # 8
         self.eventRecurrCheck = tk.IntVar()
         self.eventTimeRecurr = tk.Checkbutton(self, onvalue=1, offvalue=0, 
                                               variable=self.eventRecurrCheck,
@@ -136,13 +142,12 @@ class AddEventWindowClass(HeaderBarSetupClass):
         self.eventTimeRecurr['text'] = 'Is repeating'
         self.eventTimeRecurr.grid(column = 0, row = 8, columnspan=8, sticky=W + E + S + N)
 
-        # 8
+        # 9
         self.menuRecurrVal = tk.Variable()
         self.eventRecurrOptions = tk.OptionMenu(self,self.menuRecurrVal, 
                                                 "Every day","Every week", "Every month", "Every Year")
         self.menuRecurrVal.set("Every day")
-        self.eventRecurrOptions.config(
-                              activebackground = sc.mainBackgroundDarkerM,
+        self.eventRecurrOptions.config(activebackground = sc.mainBackgroundDarkerM,
                               activeforeground = sc.mainTextColor,
                               font = sc.fontNormal,
                               background = sc.mainBackgroundDarker,
@@ -158,8 +163,7 @@ class AddEventWindowClass(HeaderBarSetupClass):
                                                   fg =sc.mainTextColor,
                                                   activebackground = sc.mainBackgroundDarkerM,
                                                   activeforeground = sc.mainTextColor)
-        print(self.eventRecurrOptions["menu"].keys())
-        print(self.eventRecurrOptions.keys())
+
         self.eventRecurrOptions.grid(column = 0, row = 9, columnspan=3, sticky=W + E + S + N)
 
         self.eventRecurrAmountLabel = self.clone(self.myLabel)
@@ -171,37 +175,80 @@ class AddEventWindowClass(HeaderBarSetupClass):
         self.eventRecurrAmountLabel.grid(column = 3, row = 9,columnspan=3,  sticky=W + E + S + N)
         self.eventRecurrAmountI.grid(column = 6, row = 9, columnspan=2, sticky=W + E + S + N)
 
-        # 9 i 10
+        # 11
+
+        self.eventAddFromFileLabel = self.clone(self.myLabel)
+        self.eventAddFromFileLabel['text'] = 'File name:'
+
+        self.eventAddFromFileI = self.clone(self.myEntry)
+
+        self.eventAddFromFileButton = tk.Button(self,font =sc.fontSmallest, text="Add Events\nfrom file",
+                                   background=sc.mainBackgroundDarker, 
+                                   foreground=sc.mainTextColor, command= lambda: self.addEventFromFile())
+
+
+        self.eventAddFromFileLabel.grid(column = 0, row = 11,columnspan=2, sticky=W + E + S + N)
+        self.eventAddFromFileI.grid(column = 2, row = 11, columnspan=4, sticky=W + E + S + N)
+        self.eventAddFromFileButton.grid(column = 6, row =11,columnspan=2, sticky=W + E + S + N)
+
+        # 12 i 13
         self.addEventB = tk.Button(self,font =sc.fontNormal, text="Add Event",
                                    background=sc.mainBackgroundDarker, 
                                    foreground=sc.mainTextColor, command= lambda: self.addEventButton())
-        self.addEventB.grid(column = 3, columnspan=5, row =11,rowspan=2, sticky=W + E + S + N)
+        self.addEventB.grid(column = 3, columnspan=5, row =12,rowspan=2, sticky=W + E + S + N)
 
         self.mainMenuWithClose = tk.Button(self,font =sc.fontSmall, text="Menu and close",
                                    background=sc.mainBackgroundDarker, 
                                    foreground=sc.mainTextColor, command= lambda: self.openMainMenuAndClose())
-        self.mainMenuWithClose.grid(column = 0, columnspan=3, row =11, sticky=W + E + S + N)
+        self.mainMenuWithClose.grid(column = 0, columnspan=3, row =12, sticky=W + E + S + N)
 
         self.mainMenuWithoutClose = tk.Button(self,font =sc.fontSmall, text="Menu and leave", 
                                    background=sc.mainBackgroundDarker, 
                                    foreground=sc.mainTextColor, command= lambda: self.openMainMenu())
-        self.mainMenuWithoutClose.grid(column = 0, columnspan=3, row = 12, sticky=W + E + S + N)
+        self.mainMenuWithoutClose.grid(column = 0, columnspan=3, row = 13, sticky=W + E + S + N)
 
         
 
 
     def isRecurring(self):
         if(self.eventRecurrCheck.get() == 1):
-            self.eventRecurrOptions['state']='normal'
-            self.eventRecurrAmountI['state']='normal'
-            self.eventRecurrAmountLabel['state']='normal'
+            self.eventRecurrOptions['state'] = 'normal'
+            self.eventRecurrAmountI['state'] = 'normal'
+            self.eventRecurrAmountLabel['state'] = 'normal'
         else:
-            self.eventRecurrOptions['state']='disabled'
-            self.eventRecurrAmountI['state']='disabled'
-            self.eventRecurrAmountLabel['state']='disabled'
+            self.eventRecurrOptions['state'] = 'disabled'
+            self.eventRecurrAmountI['state'] = 'disabled'
+            self.eventRecurrAmountLabel['state'] = 'disabled'
 
     def addEventButton(self):
-        pass
+        msg, succ = myBackend.addEventButton(
+            str(self.eventNameI.get()),      str(self.eventDescI.get("1.0",tk.END)), 
+            self.eventDateStartI.get_date(), str(self.eventTimeStartHI.get()),  
+            str(self.eventTimeEndHI.get()),  str(self.eventTimeStartMI.get()), 
+            str(self.eventTimeEndMI.get()),  str(self.evenTimeEndNextDayCheck.get()), 
+            str(self.eventRecurrCheck.get()),     str(self.eventRecurrAmountI.get()), 
+            str(self.menuRecurrVal.get()))
+
+        self.setMessage(msg,succ)
+
+       
+
+    def addEventFromFile(self):
+        fileName = str(self.eventAddFromFileI.get())
+        msg,succ=myBackend.addEventsFromFile(fileName)
+        self.setMessage(msg,succ)
+        
+
+    def setMessage(self,msg:str, success:bool):
+        self.infoLine['state'] = 'normal'
+        self.infoLine.delete('1.0',tk.END)
+        if(success):
+            self.infoLine['foreground'] = sc.successColor
+        else:
+            self.infoLine['foreground'] = sc.errorColor
+        self.infoLine.insert(tk.END,msg)
+        self.infoLine['state'] = 'disabled'
+
 
 
 

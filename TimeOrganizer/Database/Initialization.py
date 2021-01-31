@@ -15,8 +15,9 @@ def createDatabase(replace:bool=False):
         if os.path.exists(nameOfDatabase):
             os.remove(nameOfDatabase)
         createFile()
-        testAdding()
-        addEventsFromFile(nameOfDatabase, "rozklad_zajec.ics")
+        #testAdding()
+        #test = addEventsFromFile(nameOfDatabase, "rozklad_zajec.ics")
+        #print(test)
 
 def createFile():
     createEventTable(nameOfDatabase)

@@ -3,13 +3,13 @@ from tkinter import font
 from tkinter import *
 from tkinter import ttk
 from tkcalendar import Calendar, DateEntry
-
+from NLProcessing.SearchEngine import getEngineSpacyModel
 class GuiOrganizerClass(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self.openWindows = 0
+        self.searchE = getEngineSpacyModel()
         self.withdraw()
-
     def closeWindow(self):
         self.openWindows -= 1
         if(self.openWindows == 0):
@@ -264,14 +264,28 @@ class HeaderBarSetupClass(tk.Toplevel):
     # Navigatino to other windows
     def openAddEventWindow(self):
         addEventWindowGui(self.master, StyleConfigClass())
+        
+    def openEventWindow(self, id):
+        eventWindowGui(self.master, StyleConfigClass(), id)        
+
+    def openSearchWindow(self):
+        searchWindowGui(self.master, StyleConfigClass())
+        
+    def openDayWindow(self, date):
+        dayWindowGui(self.master, StyleConfigClass(), date)
 
     def openMainMenu(self):
-        pass
+        mainWindowGui(self.master, StyleConfigClass())
 
     def openMainMenuAndClose(self):
-        pass
+        mainWindowGui(self.master, StyleConfigClass())
+        self.closeWindow()
     ####### End Header config ############
 
 
 
 from TOrganizerFront.AddEventWindow import addEventWindowGui
+from TOrganizerFront.EventWindow import eventWindowGui
+from TOrganizerFront.DayWindow import dayWindowGui
+from TOrganizerFront.SearchWindow import searchWindowGui
+from TOrganizerFront.MainWindow import mainWindowGui

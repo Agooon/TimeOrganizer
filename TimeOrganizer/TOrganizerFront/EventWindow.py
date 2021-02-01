@@ -84,6 +84,7 @@ class EventWindowClass(HeaderBarSetupClass):
         self.eventDateStartLabel = self.clone(self.myLabel)
         self.eventDateStartLabel['text'] = "Date start: "
         self.eventDateStartI = self.clone(self.myDateEntry)
+        self.eventDateStartI['date_pattern'] = 'y-mm-dd'
 
         self.eventDateStartLabel.grid(column = 0, row = 7,columnspan=4, sticky=W + E + S + N)
         self.eventDateStartI.grid(column = 4, row = 7, columnspan=4, sticky=W + E + S + N)
@@ -125,7 +126,12 @@ class EventWindowClass(HeaderBarSetupClass):
         self.changeEventB = tk.Button(self,font =sc.fontBig, text="Save changes",
                                    background=sc.mainBackgroundDarker, 
                                    foreground=sc.mainTextColor, command= lambda: self.updateEvent())
-        self.changeEventB.grid(column = 3, columnspan=5, row =11,rowspan=3, sticky=W + E + S + N)
+        self.changeEventB.grid(column = 3, columnspan=5, row =11,rowspan=2, sticky=W + E + S + N)
+
+        self.changeEventB = tk.Button(self,font =sc.fontBig, text="Delete",
+                                   background=sc.mainBackgroundDarker, 
+                                   foreground=sc.mainTextColor, command= lambda: self.deleteEvent())
+        self.changeEventB.grid(column = 3, columnspan=5, row =13, sticky=W + E + S + N)
 
         self.mainMenuWithClose = tk.Button(self,font =sc.fontSmall, text="Menu and close",
                                    background=sc.mainBackgroundDarker, 
@@ -209,6 +215,9 @@ class EventWindowClass(HeaderBarSetupClass):
          if(succ):
              self.event = newEvent
         
+    def deleteEvent(self):
+        myBackend.deleteEvent(eventId)
+        self.closeWindow()
 
     def setMessage(self,msg:str, success:bool):
         self.infoLine['state'] = 'normal'

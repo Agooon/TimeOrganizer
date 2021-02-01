@@ -1,16 +1,4 @@
-﻿from NLProcessing.NLPClassDefault import testing
-from NLProcessing.WordsFinder import testing2
-from NLProcessing.SearchEngine import testing3
-from Database.Initialization import createDatabase
-from datetime import datetime, timedelta
-
-if __name__ == "__main__":
-
-    
-
-    createDatabase(True)
-    testing3()
-
+﻿
 
 #import nltk
 #from nltk.corpus import wordnet 

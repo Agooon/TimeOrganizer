@@ -6,8 +6,6 @@ import time
 import re
 
 def listOfSimWord(word: str, pos: str):
-    regex = re.compile('[,\.!?]')
-    word = regex.sub('', word)
     wordList = [word]
     for syn in wordnet.synsets(word, pos):
         for l in syn.lemmas(): 
@@ -23,6 +21,8 @@ def listOfSimSentence(sentence: str, positions: str):
     index = 0
 
     for word in sentenceList:
+        regex = re.compile('[,\.!?]')
+        word = regex.sub('', word)
         if (str(word).isalpha() or str(word).isnumeric()):
             synsList.append(listOfSimWord(word, posList[index]))
             index+=1

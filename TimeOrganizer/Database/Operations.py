@@ -171,6 +171,61 @@ def getEventsBefore(nameOfDatabase: str, beforeDate: datetime) -> List[Event]:
 
     return listOfEvents
 
+# Get all events from certain date
+def getEventsFromDay(nameOfDatabase: str, date: datetime) -> List[Event]:
+
+    connection = sqlite3.connect(nameOfDatabase)
+    cursor = connection.cursor()
+    cursor.execute(
+        '''SELECT * FROM EventTable
+       WHERE 
+       strftime('%Y-%m-%d', DateStart) = strftime('%Y-%m-%d', '{}') OR
+       strftime('%Y-%m-%d', DateEnd) = strftime('%Y-%m-%d', '{}')
+       ORDER BY DateStart
+        '''.format(
+            date.strftime("%Y-%m-%d %H:%M:%S"),date.strftime("%Y-%m-%d %H:%M:%S")))
+
+    listOfEvents = []
+
+    for eventCall in cursor.fetchall():
+        listOfEvents.append(Event(**{
+            'id': eventCall[0],
+            'name': eventCall[1],
+            'dateStart': eventCall[2],
+            'dateEnd': eventCall[3],
+            'description': eventCall[4]}))
+
+    connection.close()
+
+    return listOfEvents
+
+# Get all events from certain date
+def getEventsBetween(nameOfDatabase: str, dateStart: datetime, dateEnd: datetime) -> List[Event]:
+
+    connection = sqlite3.connect(nameOfDatabase)
+    cursor = connection.cursor()
+    cursor.execute(
+        '''SELECT * FROM EventTable
+       WHERE 
+       strftime('%s', DateEnd) > strftime('%s', '{}') OR
+       strftime('%s', DateStart) < strftime('%s', '{}')
+        '''.format(
+            dateStart.strftime("%Y-%m-%d %H:%M:%S"),
+            dateEnd.strftime("%Y-%m-%d %H:%M:%S")))
+
+    listOfEvents = []
+
+    for eventCall in cursor.fetchall():
+        listOfEvents.append(Event(**{
+            'id': eventCall[0],
+            'name': eventCall[1],
+            'dateStart': eventCall[2],
+            'dateEnd': eventCall[3],
+            'description': eventCall[4]}))
+
+    connection.close()
+
+    return listOfEvents
 
 #                       #
 #  Deleting Operations  #
@@ -218,6 +273,18 @@ def deleteAllEventsBefore(nameOfDatabase: str, beforeDate: datetime):
 
     cursor.execute('''DELETE FROM EventTable WHERE strftime('%s', DateStart) < strftime('%s', '{}')'''.format(
             beforeDate.strftime("%Y-%m-%d %H:%M:%S")))
+
+    connection.commit()
+    connection.close()
+
+# Delete all events after date
+def deleteEventList(nameOfDatabase: str, eventList: List[Event]):
+
+    connection = sqlite3.connect(nameOfDatabase)
+    cursor = connection.cursor()
+
+    for event in eventList:
+        cursor.execute("DELETE FROM EventTable WHERE Id = '%s'" % event.id)
 
     connection.commit()
     connection.close()

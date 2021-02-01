@@ -25,7 +25,6 @@
     <Folder Include="Database\" />
     <Folder Include="NLProcessing\" />
     <Folder Include="TOrganizerFront\" />
-    <Folder Include="TOrganizerTests\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Classes.py" />
@@ -48,7 +47,6 @@
     <Compile Include="TOrganizerFront\MainWindow.py" />
     <Compile Include="TOrganizerFront\SearchWindow.py" />
     <Compile Include="TOrganizerFront\__init__.py" />
-    <Compile Include="TOrganizerTests\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLProcessing\NLPSpacyClass.py" />

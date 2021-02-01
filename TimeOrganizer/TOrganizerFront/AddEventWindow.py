@@ -77,6 +77,7 @@ class AddEventWindowClass(HeaderBarSetupClass):
         self.eventDateStartLabel = self.clone(self.myLabel)
         self.eventDateStartLabel['text'] = "Date start: "
         self.eventDateStartI = self.clone(self.myDateEntry)
+        self.eventDateStartI['date_pattern'] = 'y-mm-dd'
 
         self.eventDateStartLabel.grid(column = 0, row = 5,columnspan=4, sticky=W + E + S + N)
         self.eventDateStartI.grid(column = 4, row = 5, columnspan=4, sticky=W + E + S + N)

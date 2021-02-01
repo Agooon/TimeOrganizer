@@ -1,5 +1,4 @@
 ﻿import abc
-from NLProcessing.NLPClassDefault import *
 from typing import List
 from typing import Tuple
 
@@ -34,7 +33,7 @@ class StrategyClass(abc.ABC):
         else:
             return 'n'
 
-# Context, whcich will be using nlp
+# Context, which will be using nlp
 class NLPClassification():
     def __init__(self, strategy: StrategyClass):
         self.__strategy:StrategyClass = strategy

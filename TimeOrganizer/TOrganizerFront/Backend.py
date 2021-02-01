@@ -6,6 +6,11 @@ from datetime import datetime, timedelta
 import os
 import calendar
 from typing import List
+
+from typing import List
+import math
+
+
 nameOfDatabase = 'Test.db'
 msgOfDbNotExist="Database wasn't exist\nNew one has been created\nYou can repeat action"
 #                                           #
@@ -20,11 +25,7 @@ def dbExist():
 def createNewDb():
     dbInit.createDatabase(True)
 
-def getEvent(eventId:int) ->dbClass.Event:
-    try:
-        return dbOper.getEvent(nameOfDatabase, eventId)
-    except:
-        return "Error"
+
 
 def updateEvent(event: dbClass.Event, eventId:int):
     if(dbExist):
@@ -33,6 +34,9 @@ def updateEvent(event: dbClass.Event, eventId:int):
     else:
         createNewDb()
         return msgOfDbNotExist, False
+#
+#   Adding operations
+#
 
 def addEventsSingleEvent(event:dbClass.Event) -> [str,bool]:
     if(dbExist):
@@ -49,6 +53,58 @@ def addEventList(eventList:List[dbClass.Event]) -> [str,bool]:
     else:
         createNewDb()
         return msgOfDbNotExist, False
+#
+#   Getting operations
+#
+def getEvent(eventId:int) ->dbClass.Event:
+    try:
+        return dbOper.getEvent(nameOfDatabase, eventId)
+    except:
+        return "Error"
+
+def getEventsFromDay(date: datetime):
+    if(dbExist()):
+        return dbOper.getEventsFromDay(nameOfDatabase, date)
+    else:
+        createNewDb()
+        return "Error"
+
+def getEvents():
+    if(dbExist()):
+        return dbOper.getEvents(nameOfDatabase)
+    else:
+        createNewDb()
+        return "Error"
+
+def getEventsBefore(date: datetime):
+    if(dbExist()):
+        return dbOper.getEventsBefore(nameOfDatabase, date)
+    else:
+        createNewDb()
+        return "Error"
+
+def getEventsAfter(date: datetime):
+    if(dbExist()):
+        return dbOper.getEventsAfter(nameOfDatabase, date)
+    else:
+        createNewDb()
+        return "Error"
+#
+#   Deleting operations
+#
+def deleteEvent(id):
+    if(dbExist()):
+        return dbOper.deleteEvent(nameOfDatabase, id)
+    else:
+        createNewDb()
+        return "Error"
+def deleteEventList(eventList):
+    if(dbExist()):
+        return dbOper.deleteEventList(nameOfDatabase, eventList)
+    else:
+        createNewDb()
+        return "Error"
+
 
 def addEventButton(eventNameI, eventDescI,eventDateStartI, eventTimeStartHI, eventTimeEndHI, eventTimeStartMI, eventTimeEndMI,
                    evenTimeEndNextDayCheck, eventRecurrCheck, eventRecurrAmountI, menuRecurrVal) -> [str,bool]:
@@ -212,11 +268,13 @@ def addEventButton(eventNameI, eventDescI,eventDateStartI, eventTimeStartHI, eve
             msg, succ = addEventList(listofEvents)
             return msg, succ
 #                                           #
-#                                           #
+#                                           #=
 ############# NLP operations ################
 #                                           #
 #                                           #
 
+def filterNLP(eventList : List[dbClass.Event], searchQuery: str, engine):
+    return engine.searchWithList(searchQuery[:-1], eventList)
 
 
 #                                           #
@@ -231,3 +289,4 @@ def addEventsFromFile(nameOfFile:str) -> [str,bool]:
     else:
         createNewDb()
         return msgOfDbNotExist, False
+

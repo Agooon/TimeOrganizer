@@ -1,14 +1,15 @@
 ﻿from TOrganizerFront.GuiOrganizer import GuiOrganizerClass, StyleConfigClass
-from TOrganizerFront.AddEventWindow import addEventWindowGui
-from TOrganizerFront.EventWindow import eventWindowGui
+
+from TOrganizerFront.MainWindow import mainWindowGui
 import tkinter as tk
+from datetime import datetime
 
 
 
 def openAddEventWindow():
     guiOrganizer = GuiOrganizerClass()
     sC = StyleConfigClass()
-    eventWindowGui(guiOrganizer, sC, 5)
+    mainWindowGui(guiOrganizer, sC)
     guiOrganizer.mainloop() 
 
     

@@ -46,6 +46,12 @@ class Event(BaseModel):
         desc = regex.sub('', (self.name + " " + self.description).lower())
         return desc.split(" ")
 
+    def getShortString(self):
+        return ('''{}.  Time: {} - {}  | Name: {}'''
+        .format(self.id,  
+                self.dateStart.strftime("%H:%M"), self.dateEnd.strftime("%H:%M"), self.name,
+                ))
+
 
 
 #def testEvent():
